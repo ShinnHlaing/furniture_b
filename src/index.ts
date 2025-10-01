@@ -1,0 +1,6 @@
+import { log } from "console";
+import express from "express";
+const app = express();
+app.listen(8080, () => {
+  console.log("server ready at: http://localhost:8080");
+});
