@@ -1,6 +1,6 @@
-import { log } from "console";
-import express from "express";
-const app = express();
-app.listen(8080, () => {
-  console.log("server ready at: http://localhost:8080");
-});
+import "dotenv/config";
+import { app } from "./app";
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () =>
+  console.log(`server ready at: http://localhost:${PORT}`)
+);
