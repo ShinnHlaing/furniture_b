@@ -1,8 +1,9 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import helmet from "helmet";
 import cors from "cors";
 import compression from "compression";
 import morgan from "morgan";
+import { check } from "./middlewares/check";
 import { limiter } from "./middlewares/rateLimiter";
 export const app = express();
 app
@@ -14,6 +15,12 @@ app
   .use(compression()) //zip the respond bodies for more faster respond
   .use(limiter);
 //http://localhost:8080/health
-app.get("/health", (req, res) => {
-  res.status(200).json({ message: "hello we are ready for response." });
+interface CustomRequest extends Request {
+  userId?: number;
+}
+app.get("/health", check, (req: CustomRequest, res: Response) => {
+  res.status(200).json({
+    message: "hello we are ready for response.",
+    userId: req.userId,
+  });
 });
