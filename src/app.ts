@@ -1,10 +1,11 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 import cors from "cors";
 import compression from "compression";
 import morgan from "morgan";
-import { check } from "./middlewares/check";
 import { limiter } from "./middlewares/rateLimiter";
+import healthRoutes from "./routes/v1/health";
+
 export const app = express();
 app
   .use(morgan("dev"))
@@ -14,13 +15,12 @@ app
   .use(helmet()) //for browser security
   .use(compression()) //zip the respond bodies for more faster respond
   .use(limiter);
-//http://localhost:8080/health
-interface CustomRequest extends Request {
-  userId?: number;
-}
-app.get("/health", check, (req: CustomRequest, res: Response) => {
-  res.status(200).json({
-    message: "hello we are ready for response.",
-    userId: req.userId,
-  });
+app.use("/api/v1", healthRoutes);
+//http://localhost:8080/api/v1/health (end point)
+
+app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+  const status = error.status || 500;
+  const message = error.message || "Server Error";
+  const errorCode = error.code || "Error Code";
+  res.status(status).json({ message, error: errorCode });
 });
