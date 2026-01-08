@@ -12,8 +12,27 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum Role {
+  USER
+  ADMIN
+  AUTHOR  
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+  FREEZE
+}
+
 model User {
   id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  firstName String? @db.VarChar(52)
+  lastName String? @db.VarChar(52)
+  phone String @db.VarChar(15)
+  password String
+  email String  @unique @db.VarChar(52)
+  role Role @default(USER)
+  status Status @default(ACTIVE)
+  lastLogin DateTime?
 }
