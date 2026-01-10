@@ -13,6 +13,7 @@
   "author": "http",
   "license": "ISC",
   "devDependencies": {
+    "@faker-js/faker": "^10.2.0",
     "@types/bcrypt": "^6.0.0",
     "@types/compression": "^1.8.1",
     "@types/jest": "^30.0.0",
