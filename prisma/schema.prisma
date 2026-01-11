@@ -42,7 +42,6 @@ model User {
   updatedAt       DateTime @updatedAt//prisma will handle it automatically // @db.Timestamp(6)
   posts           Post[] // only require for prisma relation but not create any column in db
   orders          Order[]
-  city            String? @db.VarChar(52)
   // @@map("users") // customize the table name in the database
 }
 model Category { 
