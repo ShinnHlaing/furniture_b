@@ -6,7 +6,7 @@ import morgan from "morgan";
 import { limiter } from "./middlewares/rateLimiter";
 import healthRoutes from "./routes/v1/health";
 import viewRoute from "./routes/web/view";
-
+import { notFound } from "./controllers/web/errorController";
 export const app = express();
 
 app.set("view engine", "ejs");
@@ -23,6 +23,8 @@ app
 app.use("/api/v1", healthRoutes);
 //http://localhost:8080/api/v1/health (end point)
 app.use(viewRoute);
+
+app.use(notFound);
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   const status = error.status || 500;
