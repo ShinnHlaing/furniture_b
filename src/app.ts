@@ -22,8 +22,8 @@ app
   .use(limiter);
 app.use("/api/v1", healthRoutes);
 //http://localhost:8080/api/v1/health (end point)
+app.use(express.static("public")); //to link css files
 app.use(viewRoute);
-
 app.use(notFound);
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
