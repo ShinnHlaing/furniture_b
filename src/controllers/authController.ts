@@ -2,16 +2,21 @@ import { Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
 
 export const register = [
-  body("phone", "Invalid phone number")
+  body("phone")
     .trim()
     .notEmpty()
     .matches(/^[0-9]+$/)
     .isLength({ min: 5, max: 12 }) //regex
     .withMessage("Invalid phone number"),
+
   async (req: Request, res: Response, next: NextFunction) => {
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-      console.log({ error: error.array() });
+    const error = validationResult(req).array({ onlyFirstError: true });
+    if (error.length > 0) {
+      //console.log({ error: error[0].msg });
+      const err: any = new Error(error[0].msg);
+      err.status = 400;
+      err.code = "Error Invalids";
+      return next(err);
     }
     res.status(200).json({ message: "register success" });
   },
